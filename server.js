@@ -23,12 +23,50 @@ var CodeNamePicker = function() {
         //  Set the environment variables we need.
         self.ipaddress = process.env.OPENSHIFT_INTERNAL_IP;
         self.port      = process.env.OPENSHIFT_INTERNAL_PORT || 8080;
-
+        
+        self.mysql = {
+	        'user' => {
+		        'name' => 'asdfasdfasdf',
+		        'password' => 'asdfasdfasdfasdf'
+	        },
+	        'host' => process.env.OPENSHIFT_MYSQL_DB_HOST,
+	        'port' => process.env.OPENSHIFT_MYSQL_DB_PORT
+        };
+        
+        self.mongo = {
+	            'user' => {
+		            'name' => process.env.OPENSHIFT_MONGODB_DB_USERNAME,
+		            'password' => process.env.OPENSHIFT_MONGODB_DB_PASSWORD
+	            },
+	            'host' => process.env.OPENSHIFT_MONGODB_DB_HOST,
+	            'port'	=> process.env.OPENSHIFT_MONGODB_DB_PORT
+            }
+        };
+        
         if (typeof self.ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
             //  allows us to run/test the app locally.
             console.warn('No OPENSHIFT_INTERNAL_IP var, using 127.0.0.1');
             self.ipaddress = "127.0.0.1";
+            
+            self.mysql = {
+	            'user'	=> {
+		            'name' => 'cnpdbusr1',
+		            'password' => 'Eoa8NgwqfuKRWNYCGtZw'
+	            },
+	            'host'	=> 'localhost',
+	            'port'	=> 3306
+            };
+            
+            self.mongo = {
+	            'user' => {
+		            'name' => null,
+		            'password' => null
+	            },
+	            'host' => 'localhost',
+	            'port'	=> 27017
+            }
+            
         };
     };
 
@@ -157,7 +195,7 @@ var CodeNamePicker = function() {
 /**
  *  main():  Main code.
  */
-var zapp = new SampleApp();
+var zapp = new CodeNamePicker();
 zapp.initialize();
 zapp.start();
 
