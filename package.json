@@ -1,17 +1,18 @@
 {
-  "name": "OpenShift-Sample-App",
-  "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "name": "codenamepicker",
+  "version": "0.0.1",
+  "description": "Create code-names by ramdomly pulling words from a local install of the word-net database.",
   "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
+    "code",
+    "name",
+    "picker",
+    "word",
+    "net"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url":  "http://openshift.redhat.com/"
+    "name": "Sean Macdonald",
+    "email": "smacdonald@stjosephcontent.com",
+    "url":  "http://codenamepicker-sean9999.rhcloud.com/"
   },
   "homepage": "http://openshift.redhat.com/",
   "repository": {
@@ -25,6 +26,7 @@
   },
 
   "dependencies": {
+  	"express": "*"
   },
   "devDependencies": {},
   "bundleDependencies": [],
