@@ -6,7 +6,7 @@ var fs      = require('fs');
 /**
  *  Define the sample application.
  */
-var CodeNamePicker = function() {
+var SampleApp = function() {
 
     //  Scope.
     var self = this;
