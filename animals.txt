@@ -1,0 +1,144 @@
+
+Alligator
+Anemone Fish 
+Angelfish, Gray
+Anole, Green
+Anteater, Giant
+Antelope, Pronghorn
+Antelope, Sable
+Ape, Celebes
+Badger
+Bear, Kodiak Brown
+Bear, Polar
+Bearded Dragon 
+Beetle, Aquatic
+Bird, Secretary
+Bison
+Boa, Emerald
+Borer, Locust
+Camel, Bactrian
+Capybara
+Caracal
+Cardinal
+Caribou
+Cat 
+Caterpillar
+Caterpillar, Black Swallowtail
+Chameleon
+Cheetah
+Chimpanzee 
+Cougar
+Crane, Crowned
+Crane, Lesser Sandhill
+Darter, Candy
+Dingo 
+Dog 
+Dolphin
+Donkey
+Dragonfly
+Eagle, Wahlberg's
+Egret, Great
+Egret, Snowy
+Eland 
+Elephant, African
+Emu
+Firefinch, Blue-billed
+Fish, Unicorn
+Flamingo
+Fly, Flower Loving
+Fox, Red
+Frog, Green Tree
+Frog, Red-eyed Tree
+Fulgorid
+Gemsbok
+Giraffe
+Goat, Mountain
+Goatfish
+Grasshopper
+Guinea Pig
+Hamlet, Golden
+Hare, Snowshoe
+Hippopotamus
+Hornbill, Red-billed
+Hornbill, Yellow-billed
+Horse
+Ibis, Hadada
+Iguana, Desert
+Impala
+Jackrabbit
+Jaguar
+Jay, Blue
+Kangaroo
+Katydid, Leaf
+Koala
+Kookaburra
+Lechwe, Black
+Lemur, Ring-tailed 
+Lemur, Ruffed
+Leopard
+Lion, African
+Lizard, Agama
+Lizard, Collared
+Lizard, Nile Monitor
+Locust
+Longclaw, Yellow-throated
+Lovebird, Nyasa
+Macaw, Scarlet
+Mandrill
+Mantis, Praying
+Marmot 
+Mastigodryas
+Monkey, Patas
+Monkey, Woolly Spider
+Ocelot 
+Octopus
+Oedemera
+Orca
+Owl, Barn
+Owl, Great Horned
+Panda, Giant
+Pelican, Brown
+Pig
+Pony, Shetland
+Puffin 
+Raccoon 
+Raven
+Rhinoceros, White Rooster
+Sheep, Bighorn
+Sheep, Dall
+Sheep, Scottish Highland
+Skink, Great Plains 
+Skunk
+Snake, Green Water
+Snake, Rough Green
+Spanish Flag
+Sparrowhawk, Little
+Squid, Atlantic Oval
+Squirrel, Ground
+Squirrel, Red
+Starling, Glossy 
+Stork, Painted
+Stork, Yellow-billed
+Sunfish, Dollar
+Swan, Mute
+Tang, Sailfin
+Tayra
+Tiger, Bengal
+Toad
+Toad, Oak
+Tortoise, Giant
+Triggerfish, Orange-striped
+Trunkfish, Spotted
+Turkey, Wild
+Vulture, Turkey
+Wallaby
+Walrus 
+Wapiti 
+Warthog
+Waterbuck
+Weaver, Masked
+Wildebeest
+Wolf, Arctic 
+Wolf, Gray
+Zebra
+
