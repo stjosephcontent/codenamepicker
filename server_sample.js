@@ -2,6 +2,7 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+var mongodb	= require('mongodb');
 
 /**
  *  Define the sample application.
@@ -110,7 +111,20 @@ var SampleApp = function() {
         };
     };
 
-
+    /**
+     *  Connect to the MongoDB
+     */
+    self.connectToDB = function() {
+	    this.db = new mongodb.Db('animal-list', new mongodb.Server('localhost', 27017, {auto_reconnect: true, safe: false}, {}));
+	    this.db.open(function(err, client){
+		    client.createCollection("animals", function(err, collection) {
+			    client.collection("animals", function(err, collection) {
+				    collection.insert([{"name":"cat"},{"name":"dog"}], function(){});
+			    });
+		    });
+	    });
+    }
+    
     /**
      *  Initialize the server (express) and create the routes and register
      *  the handlers.
@@ -133,7 +147,8 @@ var SampleApp = function() {
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
-
+        self.connectToDB();
+        
         // Create the express server and routes.
         self.initializeServer();
     };
