@@ -19,14 +19,16 @@ var SampleApp = function() {
 	            "username": null,
 	            "passwd": null
             };
+            self.connection_url = 'mongodb://' + self.mongo.host + ':' + self.mongo.port; 
         } else {
             self.mongo = {
 	            "host": process.env.OPENSHIFT_MONGODB_DB_HOST,
 	            "port": process.env.OPENSHIFT_MONGODB_DB_PORT,
 	            "username": process.env.OPENSHIFT_MONGODB_DB_USERNAME,
 	            "passwd": process.env.OPENSHIFT_MONGODB_DB_PASSWORD
-            };	        
-        }
+            };
+            self.connection_url = 'mongodb://' + self.mongo.username + ':' + self.mongo.passwd + '@' + self.mongo.host + ':' + self.mongo.port; 	        
+        } 
     };
 
 
@@ -75,14 +77,8 @@ var SampleApp = function() {
      */
      
     self.connectToDB = function() {
-	   
-	    if (self.mongo.username !== null) {
-	    	var connection_url = 'mongodb://' + self.mongo.username + ':' + self.mongo.passwd + '@' + self.mongo.host + ':' + self.mongo.port; 
-	    } else {
-		    var connection_url = 'mongodb://' + self.mongo.host + ':' + self.mongo.port; 
-	    }	   
 	    
-		mongodb.Db.connect(connection_url, function(err, db) {
+		mongodb.Db.connect(self.connection_url, function(err, db) {
 		
 	    	var animalCol = db.collection("animals");
 	    	var adjCol = db.collection("adjectives");
@@ -160,36 +156,23 @@ var SampleApp = function() {
         
         self.app.get( '/js/animals.js', function(req,res) {
 	        res.setHeader('Content-Type', 'text/javascript');
-	        var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host,self.mongo.port));
-	        db.open(function(err, db) {
-		    	if (self.mongo.username !== null) {
-			    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
-				    	if (err) console.log(err);
-			    	});
-		    	}	        
+	        mongodb.Db.connect(self.connection_url, function(err, db) {
 		        var animals_cursor = db.collection('animals').find({});
 		        var result = animals_cursor.toArray( function(err,docs) {
 		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
 			    });
-			});
+	        });
         });
         
         self.app.get( '/js/adjectives.js', function(req,res) {
 	        res.setHeader('Content-Type', 'text/javascript');
-	        var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host,self.mongo.port));
-	        db.open(function(err, db) {
-		    	if (self.mongo.username !== null) {
-			    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
-				    	if (err) console.log(err);
-			    	});
-		    	}
+	        mongodb.Db.connect(self.connection_url, function(err, db) {
 		        var animals_cursor = db.collection('adjectives').find({});
 		        var result = animals_cursor.toArray( function(err,docs) {
-		        	//res.send( '"use strict";' );
 		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
 			    });
-			});	        
-        });        
+	        });
+        });
     };
 
 
