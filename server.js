@@ -1,95 +1,45 @@
 #!/bin/env node
-//  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+var mongodb	= require('mongodb');
 
-/**
- *  Define the sample application.
- */
-var CodeNamePicker = function() {
+var SampleApp = function() {
 
-    //  Scope.
     var self = this;
 
-
-    /*  ================================================================  */
-    /*  Helper functions.                                                 */
-    /*  ================================================================  */
-
-    /**
-     *  Set up server IP address and port # using env variables/defaults.
-     */
     self.setupVariables = function() {
-        //  Set the environment variables we need.
         self.ipaddress = process.env.OPENSHIFT_INTERNAL_IP;
         self.port      = process.env.OPENSHIFT_INTERNAL_PORT || 8080;
-        
-        self.mysql = {
-	        'user' => {
-		        'name' => 'asdfasdfasdf',
-		        'password' => 'asdfasdfasdfasdf'
-	        },
-	        'host' => process.env.OPENSHIFT_MYSQL_DB_HOST,
-	        'port' => process.env.OPENSHIFT_MYSQL_DB_PORT
-        };
-        
-        self.mongo = {
-	            'user' => {
-		            'name' => process.env.OPENSHIFT_MONGODB_DB_USERNAME,
-		            'password' => process.env.OPENSHIFT_MONGODB_DB_PASSWORD
-	            },
-	            'host' => process.env.OPENSHIFT_MONGODB_DB_HOST,
-	            'port'	=> process.env.OPENSHIFT_MONGODB_DB_PORT
-            }
-        };
-        
         if (typeof self.ipaddress === "undefined") {
-            //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-            //  allows us to run/test the app locally.
             console.warn('No OPENSHIFT_INTERNAL_IP var, using 127.0.0.1');
             self.ipaddress = "127.0.0.1";
-            
-            self.mysql = {
-	            'user'	=> {
-		            'name' => 'cnpdbusr1',
-		            'password' => 'Eoa8NgwqfuKRWNYCGtZw'
-	            },
-	            'host'	=> 'localhost',
-	            'port'	=> 3306
-            };
-            
             self.mongo = {
-	            'user' => {
-		            'name' => null,
-		            'password' => null
-	            },
-	            'host' => 'localhost',
-	            'port'	=> 27017
-            }
-            
-        };
+	            "host": "localhost",
+	            "port": 27017,
+	            "username": null,
+	            "passwd": null
+            };
+        } else {
+            self.mongo = {
+	            "host": process.env.OPENSHIFT_MONGODB_DB_HOST,
+	            "port": process.env.OPENSHIFT_MONGODB_DB_PORT,
+	            "username": process.env.OPENSHIFT_MONGODB_DB_USERNAME,
+	            "passwd": process.env.OPENSHIFT_MONGODB_DB_PASSWORD
+            };	        
+        }
     };
 
 
-    /**
-     *  Populate the cache.
-     */
+    //	cache
     self.populateCache = function() {
         if (typeof self.zcache === "undefined") {
             self.zcache = { 'index.html': '' };
         }
-
-        //  Local cache for static content.
         self.zcache['index.html'] = fs.readFileSync('./index.html');
+        self.zcache['css/home.css'] = fs.readFileSync('./css/home.css');
+        self.zcache['css/font-awesome.min.css'] = fs.readFileSync('./css/font-awesome.min.css');
     };
-
-
-    /**
-     *  Retrieve entry (content) from cache.
-     *  @param {string} key  Key identifying content to retrieve from cache.
-     */
     self.cache_get = function(key) { return self.zcache[key]; };
-
 
     /**
      *  terminator === the termination handler
@@ -110,10 +60,7 @@ var CodeNamePicker = function() {
      *  Setup termination handlers (for exit and a list of signals).
      */
     self.setupTerminationHandlers = function(){
-        //  Process on exit and signals.
         process.on('exit', function() { self.terminator(); });
-
-        // Removed 'SIGPIPE' from the list - bugz 852598.
         ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
          'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
         ].forEach(function(element, index, array) {
@@ -121,38 +68,69 @@ var CodeNamePicker = function() {
         });
     };
 
-
     /*  ================================================================  */
     /*  App server functions (main app logic here).                       */
+    /**
+     *  Connect to the MongoDB
+     */
+     
+     
+    self.connectToDB = function() {
+	    var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host, self.mongo.port, {auto_reconnect: true, safe: false}, {}));
+	    db.open(function(err, db){
+	    	if (self.mongo.username !== null) {
+		    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
+			    	if (err) console.log(err);
+		    	});
+	    	}
+	    	var animalCol = db.collection("animals");
+	    	var adjCol = db.collection("adjectives");
+	    	animalCol.remove();
+	    	adjCol.remove();
+	    	var animals = fs.readFileSync("./animals.txt", "utf8").split("\n");
+	    	var adjectives = fs.readFileSync("./adjectives.txt", "utf8").split("\n");
+		    db.createCollection("animals", function(err, collection) {
+		    	for (var i = 0; i < animals.length; i++) {
+		    		if (animals[i] !== '') {
+			    		collection.insert({"name":animals[i]}, function(){});		
+		    		}
+		    	}
+		    });
+		    db.createCollection("adjectives", function(err, collection) {
+			    for (var i = 0; i < adjectives.length; i++) {
+				    if (adjectives[i] != '') {
+					    var adj = adjectives[i].split(" ")[1];
+					    (function(adj) {
+							var result = collection.findOne({name: adj}, function(err, doc){
+							    if (typeof doc !== null) {
+									collection.insert({name: adj}, console.log);    
+							    }
+						    });		    
+					    })(adj);				    
+				    }
+			    }
+		    })
+	    });
+    }    
     /*  ================================================================  */
 
-    /**
-     *  Create the routing table entries + handlers for the application.
-     */
+    //	routing
     self.createRoutes = function() {
         self.routes = { };
-
-        // Routes for /health, /asciimo and /
         self.routes['/health'] = function(req, res) {
             res.send('1');
         };
-
         self.routes['/asciimo'] = function(req, res) {
             var link = "http://i.imgur.com/kmbjB.png";
             res.send("<html><body><img src='" + link + "'></body></html>");
         };
-
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
         };
     };
-
-
-    /**
-     *  Initialize the server (express) and create the routes and register
-     *  the handlers.
-     */
+    
+    //	initialize
     self.initializeServer = function() {
         self.createRoutes();
         self.app = express.createServer();
@@ -161,6 +139,52 @@ var CodeNamePicker = function() {
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+        
+        self.app.get( /^\/css\/.*\.css$/, function(req,res) {
+        	res.setHeader('Content-Type', 'text/css');
+	        //res.send(self.cache_get(req));
+	        
+	        res.send( fs.readFileSync('.' + req.url) );
+	        
+        });
+      
+        self.app.get( /^\/font\//, function(req,res) {
+	        res.setHeader('Content-Type', 'application/x-font-woff');
+	        res.send( fs.readFileSync('.' + req.url) );
+        });
+        
+        self.app.get( '/js/animals.js', function(req,res) {
+	        res.setHeader('Content-Type', 'text/javascript');
+	        var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host,self.mongo.port));
+	        db.open(function(err, db) {
+		    	if (self.mongo.username !== null) {
+			    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
+				    	if (err) console.log(err);
+			    	});
+		    	}	        
+		        var animals_cursor = db.collection('animals').find({});
+		        var result = animals_cursor.toArray( function(err,docs) {
+		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
+			    });
+			});
+        });
+        
+        self.app.get( '/js/adjectives.js', function(req,res) {
+	        res.setHeader('Content-Type', 'text/javascript');
+	        var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host,self.mongo.port));
+	        db.open(function(err, db) {
+		    	if (self.mongo.username !== null) {
+			    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
+				    	if (err) console.log(err);
+			    	});
+		    	}
+		        var animals_cursor = db.collection('adjectives').find({});
+		        var result = animals_cursor.toArray( function(err,docs) {
+		        	//res.send( '"use strict";' );
+		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
+			    });
+			});	        
+        });        
     };
 
 
@@ -171,7 +195,8 @@ var CodeNamePicker = function() {
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
-
+        self.connectToDB();
+        
         // Create the express server and routes.
         self.initializeServer();
     };
@@ -195,7 +220,7 @@ var CodeNamePicker = function() {
 /**
  *  main():  Main code.
  */
-var zapp = new CodeNamePicker();
+var zapp = new SampleApp();
 zapp.initialize();
 zapp.start();
 
