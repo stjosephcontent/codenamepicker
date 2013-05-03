@@ -81,6 +81,9 @@ var SampleApp = function() {
 	    	if (self.mongo.username !== null) {
 		    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
 			    	if (err) console.log(err);
+			    	
+			    	
+			    	
 		    	});
 	    	}
 	    	var animalCol = db.collection("animals");
@@ -90,6 +93,9 @@ var SampleApp = function() {
 	    	var animals = fs.readFileSync("./animals.txt", "utf8").split("\n");
 	    	var adjectives = fs.readFileSync("./adjectives.txt", "utf8").split("\n");
 		    db.createCollection("animals", function(err, collection) {
+		    	if (err) {
+			    	console.log('create collection didnt work',err);
+		    	}
 		    	for (var i = 0; i < animals.length; i++) {
 		    		if (animals[i] !== '') {
 			    		collection.insert({"name":animals[i]}, function(){});		
