@@ -44,6 +44,9 @@ var SampleApp = function() {
 
         //  Local cache for static content.
         self.zcache['index.html'] = fs.readFileSync('./index.html');
+        
+        self.zcache['css/home.css'] = fs.readFileSync('./css/home.css');
+        
     };
 
 
@@ -98,6 +101,10 @@ var SampleApp = function() {
         // Routes for /health, /asciimo and /
         self.routes['/health'] = function(req, res) {
             res.send('1');
+        };
+
+        self.routes['/css/home.css'] = function(req,res) {
+	        
         };
 
         self.routes['/asciimo'] = function(req, res) {
@@ -163,6 +170,12 @@ var SampleApp = function() {
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+        
+        self.app.get( /^css\//, function(req,res) {
+	        res.send(self.cache_get(req));
+        });
+        
+        
     };
 
 
