@@ -115,13 +115,39 @@ var SampleApp = function() {
      *  Connect to the MongoDB
      */
     self.connectToDB = function() {
-	    this.db = new mongodb.Db('animal-list', new mongodb.Server('localhost', 27017, {auto_reconnect: true, safe: false}, {}));
-	    this.db.open(function(err, client){
-		    client.createCollection("animals", function(err, collection) {
-			    client.collection("animals", function(err, collection) {
-				    collection.insert([{"name":"cat"},{"name":"dog"}], function(){});
-			    });
+	    var db = new mongodb.Db('animal-list', new mongodb.Server('localhost', 27017, {auto_reconnect: true, safe: false}, {}));
+	    db.open(function(err, db){
+	    	var animalCol = db.collection("animals");
+	    	var adjCol = db.collection("adjectives");
+	    	animalCol.remove();
+	    	adjCol.remove();
+	    	
+	    	var animals = fs.readFileSync("./animals.txt", "utf8").split("\n");
+	    	var adjectives = fs.readFileSync("./adjectives.txt", "utf8").split("\n");
+	    	
+		    db.createCollection("animals", function(err, collection) {
+		    	for (var i = 0; i < animals.length; i++) {
+		    		if (animals[i] !== '') {
+			    		collection.insert({"name":animals[i]}, function(){});		
+		    		}
+		    	}
 		    });
+		    
+		    db.createCollection("adjectives", function(err, collection) {
+
+			    for (var i = 0; i < adjectives.length; i++) {
+				    if (adjectives[i] != '') {
+					    var adj = adjectives[i].split(" ")[1];
+					    /*
+						var result = collection.findOne({name: this.adj}, function(err, doc){
+					    	return doc;
+					    });
+					    */
+						collection.insert({name:adj}, function(){});
+					    
+				    }
+			    }
+		    })
 	    });
     }
     

@@ -1,0 +1,51 @@
+body {
+	background-color: #FFEAB6;
+	width: 900px;
+	font-family: Helvetica, Arial;
+	text-align: center;
+	display:block;
+	margin: auto;
+	text-decoration: none;
+}
+
+h1 {
+	padding-top: 15px;
+	font-size: 24px;
+}
+
+.generate {
+	width: 200px;
+	height: 75px;
+	font-size: 18px;
+	border-radius: 5px;
+	margin: 20px;
+}
+
+.results {
+	font-size: 20px;
+	font-weight: bold;
+	width: 100%;
+}
+
+.result { 
+	padding: 10px;
+	margin: 10px auto 10px auto;
+	background-color: #96CCC8;
+	border-radius: 5px;
+	width: 600px;
+	height: 25px;;
+	text-align: center;
+
+}
+
+.result .codeName {
+	float: left;
+	text-align: left;
+	height: 100%;
+
+}
+
+.result .remove {
+	float: right;
+	height:100%;
+}
