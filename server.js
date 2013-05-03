@@ -74,22 +74,20 @@ var SampleApp = function() {
      *  Connect to the MongoDB
      */
      
-     
     self.connectToDB = function() {
-	    var db = new mongodb.Db('animal-list', new mongodb.Server(self.mongo.host, self.mongo.port, {auto_reconnect: true, safe: false}, {}));
-	    db.open(function(err, db){
-	    	if (self.mongo.username !== null) {
-		    	db.authenticate( self.mongo.username, self.mongo.passwd, function(err) {
-			    	if (err) console.log(err);
-			    	
-			    	
-			    	
-		    	});
-	    	}
+	   
+	    if (self.mongo.username !== null) {
+	    	var connection_url = 'mongodb://' + self.mongo.username + ':' + self.mongo.passwd + '@' + self.mongo.host + ':' + self.mongo.port; 
+	    } else {
+		    var connection_url = 'mongodb://' + self.mongo.host + ':' + self.mongo.port; 
+	    }	   
+	    
+		mongodb.Db.connect(connection_url, function(err, db) {
+		
 	    	var animalCol = db.collection("animals");
 	    	var adjCol = db.collection("adjectives");
-	    	animalCol.remove();
-	    	adjCol.remove();
+	    	animalCol.remove({}, function() {});
+	    	adjCol.remove({}, function() {});
 	    	var animals = fs.readFileSync("./animals.txt", "utf8").split("\n");
 	    	var adjectives = fs.readFileSync("./adjectives.txt", "utf8").split("\n");
 		    db.createCollection("animals", function(err, collection) {
@@ -115,9 +113,10 @@ var SampleApp = function() {
 					    })(adj);				    
 				    }
 			    }
-		    })
-	    });
-    }    
+		    });		
+		});
+    };
+    
     /*  ================================================================  */
 
     //	routing
