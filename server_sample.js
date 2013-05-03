@@ -192,12 +192,7 @@ var SampleApp = function() {
 	        db.open(function(err, db) {
 		        var animals_cursor = db.collection('animals').find({});
 		        var result = animals_cursor.toArray( function(err,docs) {
-		        	res.send( 
-			        	'"use strict";' + "\n"
-			        	+ 'var animals = '
-			        	+ JSON.stringify( docs.map(function(d){ return d.name; }))
-			        	+ ';'
-		        	);
+		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
 			    });
 			});
         });
@@ -209,10 +204,7 @@ var SampleApp = function() {
 		        var animals_cursor = db.collection('adjectives').find({});
 		        var result = animals_cursor.toArray( function(err,docs) {
 		        	//res.send( '"use strict";' );
-		        	res.send( '"use strict";' + "\n" + 'var adjectives = '
-			        	+ JSON.stringify( docs.map(function(d){ return d.name; }))
-			        	+ ';'
-			        );
+		        	res.send(JSON.stringify( docs.map(function(d){ return d.name; })));
 			    });
 			});	        
         });

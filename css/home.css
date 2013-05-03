@@ -48,4 +48,14 @@ h1 {
 .result .remove {
 	float: right;
 	height:100%;
+	text-decoration: none;
+}
+
+.remove a {
+	text-decoration: none;
+	color: black;
+}
+
+.remove a:hover {
+	color: #464646;
 }
