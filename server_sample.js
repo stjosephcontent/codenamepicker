@@ -102,11 +102,14 @@ var SampleApp = function() {
         self.routes['/health'] = function(req, res) {
             res.send('1');
         };
-
+        
+        /*
         self.routes['/css/home.css'] = function(req,res) {
-	        
+	        res.setHeader('Content-Type', 'text/css');
+	        res.send(self.cache_get('css/home.css'));
         };
-
+        */
+        
         self.routes['/asciimo'] = function(req, res) {
             var link = "http://i.imgur.com/kmbjB.png";
             res.send("<html><body><img src='" + link + "'></body></html>");
@@ -141,17 +144,16 @@ var SampleApp = function() {
 		    });
 		    
 		    db.createCollection("adjectives", function(err, collection) {
-
 			    for (var i = 0; i < adjectives.length; i++) {
 				    if (adjectives[i] != '') {
 					    var adj = adjectives[i].split(" ")[1];
-					    /*
-						var result = collection.findOne({name: this.adj}, function(err, doc){
-					    	return doc;
-					    });
-					    */
-						collection.insert({name:adj}, function(){});
-					    
+					    (function(adj) {
+							var result = collection.findOne({name: adj}, function(err, doc){
+							    if (typeof doc !== null) {
+									collection.insert({name: adj}, console.log);    
+							    }
+						    });		    
+					    })(adj);				    
 				    }
 			    }
 		    })
@@ -171,10 +173,49 @@ var SampleApp = function() {
             self.app.get(r, self.routes[r]);
         }
         
-        self.app.get( /^css\//, function(req,res) {
-	        res.send(self.cache_get(req));
+        self.app.get( /^\/css\/.*\.css$/, function(req,res) {
+        	res.setHeader('Content-Type', 'text/css');
+	        //res.send(self.cache_get(req));
+	        
+	        res.send( fs.readFileSync('.' + req.url) );
+	        
+        });
+      
+        self.app.get( /^\/font\//, function(req,res) {
+	        res.setHeader('Content-Type', 'application/x-font-woff');
+	        res.send( fs.readFileSync('.' + req.url) );
         });
         
+        self.app.get( '/js/animals.js', function(req,res) {
+	        res.setHeader('Content-Type', 'text/javascript');
+	        var db = new mongodb.Db('animal-list', new mongodb.Server('localhost',27017));
+	        db.open(function(err, db) {
+		        var animals_cursor = db.collection('animals').find({});
+		        var result = animals_cursor.toArray( function(err,docs) {
+		        	res.send( 
+			        	'"use strict";' + "\n"
+			        	+ 'var animals = '
+			        	+ JSON.stringify( docs.map(function(d){ return d.name; }))
+			        	+ ';'
+		        	);
+			    });
+			});
+        });
+        
+        self.app.get( '/js/adjectives.js', function(req,res) {
+	        res.setHeader('Content-Type', 'text/javascript');
+	        var db = new mongodb.Db('animal-list', new mongodb.Server('localhost',27017));
+	        db.open(function(err, db) {
+		        var animals_cursor = db.collection('adjectives').find({});
+		        var result = animals_cursor.toArray( function(err,docs) {
+		        	//res.send( '"use strict";' );
+		        	res.send( '"use strict";' + "\n" + 'var adjectives = '
+			        	+ JSON.stringify( docs.map(function(d){ return d.name; }))
+			        	+ ';'
+			        );
+			    });
+			});	        
+        });
         
     };
 
