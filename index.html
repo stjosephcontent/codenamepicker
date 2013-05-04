@@ -8,64 +8,17 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/animals.js"></script>
 		<script type="text/javascript" src="/js/adjectives.js"></script>
-		<script type="text/javascript">
-			"use strict";
-			var animals;
-			var adjectives;
-			
-			var randomNameGenerator = function() {
-				var randAnimal = animals[Math.floor(Math.random() * animals.length)];
-				var randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-				
-				if (randAnimal.indexOf(",") != -1) {
-					var splitAnimal = randAnimal.split(",");
-					randAnimal = splitAnimal[1].trim() + " " + splitAnimal[0];
-				}
-				
-				randAdj = randAdj.charAt(0).toUpperCase() + randAdj.slice(1);
-				
-				return randAdj + " " + randAnimal;
-			}
-			
-			$(document).ready(function() {
-				$('.generate').on('click', function() {
-					var buffer = '<div class="result">'
-						+ '<div class="codeName">' + randomNameGenerator() + '</div>'
-						+ '<div class="remove"><a href="#" class="removeName"><i class="icon-remove"></i></a></span>'
-						+ '</div>';
-					$('.results').prepend(buffer);
-					$('.removeName').on('click', function() {
-						$(this).parent().parent().remove();
-						return false;
-					});
-				});
-				$('.removeName').on('click', function() {
-					$(this).parent().parent().remove();
-					return false;
-				});
-				
-				$.ajax({
-					url: "js/animals.js",
-					success: function(data) {
-						animals = JSON.parse(data);	
-					},
-				});
-				
-				$.ajax({
-					url: "js/adjectives.js",
-					success: function(data) {
-						adjectives = JSON.parse(data);
-					},
-				});
-			});
-		</script>
+		<script type="text/javascript" src="/js/app.js"></script>
 	</head>
 	<body>
 		<h1>Codename Picker Helper Guy</h1>
 		
+		<form id="options" name="options">
+			<label for="aliteration">Use aliteration</label>
+			<input type="checkbox" name="aliteration" id="aliteration" value="1" />
+		</form>
+
 		<button class="generate">Generate!</button>
-		
-		<div class="results">
-		</div>
+		<div class="results"></div>
 	</body>
 </html>
