@@ -79,7 +79,9 @@ var SampleApp = function() {
     self.connectToDB = function() {
 	    
 		mongodb.Db.connect(self.connection_url, function(err, db) {
-		
+			
+			if (err) console.log(err);
+			
 	    	var animalCol = db.collection("animals");
 	    	var adjCol = db.collection("adjectives");
 	    	animalCol.remove({}, function() {});

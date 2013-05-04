@@ -1,6 +1,6 @@
 {
   "name": "codenamepicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create code-names by ramdomly pulling words from a local install of the word-net database.",
   "keywords": [
     "code",
@@ -12,26 +12,23 @@
   "author": {
     "name": "Sean Macdonald",
     "email": "smacdonald@stjosephcontent.com",
-    "url":  "http://codenamepicker-sean9999.rhcloud.com/"
+    "url":  "http://seanmacdonald.ca"
   },
-  "homepage": "http://openshift.redhat.com/",
+  "homepage": "http://codenames.sjc.io",
   "repository": {
     "type": "git",
-    "url": "https://gitub.com/openshift/origin-server"
+    "url": "https://github.com/stjosephcontent/codenamepicker"
   },
-
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
   	"express": "*",
   	"mongodb": "*"
   },
   "devDependencies": {},
   "bundleDependencies": [],
-
   "private": true,
   "main": "server.js"
 }
