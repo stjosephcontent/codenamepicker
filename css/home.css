@@ -1,42 +1,93 @@
+
+
 body {
-	background-color: #FFEAB6;
-	width: 900px;
-	font-family: Helvetica, Arial;
+	background-color: #E8D9A9;
+	box-shadow: inset 0 0 55px rgba(115,143,87,0.6);
+	padding: 10px;
+	font-family: 'Miltonian', cursive;
 	text-align: center;
 	display:block;
 	margin: auto;
 	text-decoration: none;
+	font-size: 120%;
 }
 
 h1 {
+	color: #1F231E;
+	text-shadow: 0 0 3px rgba(115,143,87,1);
 	padding-top: 15px;
-	font-size: 24px;
+	font-size: 250%;
+	line-height: 90%;
+	text-transform: uppercase;
+}
+
+label {
+	font-family: 'Sue Ellen Francisco', cursive;
 }
 
 .generate {
-	width: 200px;
+	border: none;
+	border-collapse: collapse;
+	background-color: transparent;
+	width: 90%;
 	height: 75px;
-	font-size: 18px;
-	border-radius: 5px;
-	margin: 20px;
+	font-size: 200%;
+	margin: 20px auto;
+	border-radius: 10px;
+	font-family: 'Miltonian', cursive;
+	text-transform: uppercase;
+	-webkit-transition: box-shadow .8s ease;
+	-moz-transition: box-shadow .8s ease;
+	-ms-transition: box-shadow .8s ease;
+	-o-transition: box-shadow .8s ease;
+	transition: box-shadow .8s ease;
+}
+
+.generate:hover {
+	box-shadow: inset 0 0 55px rgba(115,143,87,0.6);
 }
 
 .results {
-	font-size: 20px;
+	font-size: 1.25em;
 	font-weight: bold;
-	width: 100%;
 }
 
 .result { 
 	padding: 10px;
 	margin: 10px auto 10px auto;
-	background-color: #96CCC8;
-	border-radius: 5px;
-	width: 600px;
-	height: 25px;;
+	width: 90%;
+	min-height: 25px;
+	height: 25px;
 	text-align: center;
-
+	border-bottom: 4px double #DEA176;
+	color: rgba(31,34,40,0.5);
 }
+
+.result:nth-of-type(1) {
+	color: rgba(31,34,40,1);
+	font-size: 125%;
+}
+
+.result:nth-of-type(2) {
+	color: rgba(31,34,40,0.9);
+	font-size: 120%;
+}
+
+.result:nth-of-type(3) {
+	color: rgba(31,34,40,0.8);
+	font-size: 115%;
+}
+
+.result:nth-of-type(4) {
+	color: rgba(31,34,40,0.7);
+	font-size: 110%;	
+}
+
+.result:nth-of-type(4) {
+	color: rgba(31,34,40,0.6);
+	font-size: 105%;	
+}
+
 
 .result .codeName {
 	float: left;
