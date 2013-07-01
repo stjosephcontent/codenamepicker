@@ -1,6 +1,6 @@
 {
-  "name": "codenamepicker",
-  "version": "0.0.3",
+  "name": "seanatsjc-nodejitsu1",
+  "version": "0.0.3-1",
   "description": "Create code-names by ramdomly pulling words from a local install of the word-net database.",
   "keywords": [
     "code",
@@ -14,10 +14,16 @@
     "start": "node server.js"
   },
   "author": {
-    "name": "Sean Macdonald",
-    "email": "smacdonald@stjosephcontent.com",
-    "url":  "http://seanmacdonald.ca"
+    "name": "Phyliss Lee",
+    "email": "plee@stjosephcontent.com",
+    "url": "http://seanmacdonald.ca"
   },
+  "contributors": [
+    {
+      "name": "Sean Macdonald",
+      "email": "smacdonald@stjosephcontent.com"
+    }
+  ],
   "homepage": "http://seanatsjc-nodejitsu1.jit.su",
   "repository": {
     "type": "git",
@@ -28,9 +34,9 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
-  	"express": "*",
-  	"mongodb": "*",
-  	"client-sessions": "*"
+    "express": "*",
+    "mongodb": "*",
+    "client-sessions": "*"
   },
   "devDependencies": {},
   "bundleDependencies": [],

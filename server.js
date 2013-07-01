@@ -40,7 +40,7 @@ app.use(function(req,res,next) {
 	//	adjectives and animals
 }
 
-app.use(express.static(__dirname));
+app.use(express.static('./'));
 
 /*
 app.use(express.static('/css',__dirname + "/css"));
