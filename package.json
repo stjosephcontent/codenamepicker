@@ -1,6 +1,6 @@
 {
   "name": "codenamepicker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create code-names by ramdomly pulling words from a local install of the word-net database.",
   "keywords": [
     "code",
@@ -9,6 +9,10 @@
     "word",
     "net"
   ],
+  "subdomain": "seanatsjc-nodejitsu1",
+  "scripts": {
+    "start": "node server.js"
+  },
   "author": {
     "name": "Sean Macdonald",
     "email": "smacdonald@stjosephcontent.com",
