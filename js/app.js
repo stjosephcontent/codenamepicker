@@ -7,12 +7,9 @@ var randomNameGenerator = function() {
 		var splitAnimal = randAnimal.split(",");
 		randAnimal = splitAnimal[1].trim() + " " + splitAnimal[0];
 	}
-	randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-	if ( $("#aliteration").prop("checked") ) {
-		while ( randAdj.charAt(0).toUpperCase() != randAnimal.charAt(0).toUpperCase() ) {
-			randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-		}
-	}
+	do {
+		randAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+	} while ( $("#aliteration").prop("checked") && randAdj.charAt(0).toUpperCase() != randAnimal.charAt(0).toUpperCase() );
 	randAdj = randAdj.charAt(0).toUpperCase() + randAdj.slice(1);
 	return randAdj + " " + randAnimal;
 }
